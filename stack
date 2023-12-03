@@ -1,0 +1,47 @@
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+bool isWellParenthesized(const string& expression) {
+    stack<char> charStack;
+
+    for (char ch : expression) {
+        if (ch == '(' || ch == '[' || ch == '{') {
+            // Push opening delimiters onto the stack
+            charStack.push(ch);
+        } else if (ch == ')' || ch == ']' || ch == '}') {
+            // Check for matching closing delimiters
+            if (charStack.empty()) {
+                return false;  // Stack is empty, no matching opening delimiter
+            }
+
+            char openDelimiter = charStack.top();
+            charStack.pop();
+
+            if ((ch == ')' && openDelimiter != '(') ||
+                (ch == ']' && openDelimiter != '[') ||
+                (ch == '}' && openDelimiter != '{')) {
+                return false;  // Mismatched opening and closing delimiter
+            }
+        }
+    }
+
+    // The expression is well-parenthesized if the stack is empty at the end
+    return charStack.empty();
+}
+
+int main() {
+    string expression;
+
+    cout << "Enter an expression: ";
+    getline(cin, expression);
+
+    if (isWellParenthesized(expression)) {
+        cout << "The expression is well-parenthesized.\n";
+    } else {
+        cout << "The expression is not well-parenthesized.\n";
+    }
+
+    return 0;
+}
